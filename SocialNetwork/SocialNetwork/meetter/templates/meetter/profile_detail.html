@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'base.html' %}
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+
+{% block content %}
+
+<div class="column is-two-thirds">
+    <div class="block">
+        <h1 class="title is-1">{{ profile.user.username }}'s meets</h1>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="buttons has-addons">
+            {% if profile in user.profile.follows.all %}
+                <button class="button is-success is-static">Follow</button>
+                <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+            {% else %}
+                <button class="button is-success" name="follow" value="follow">Follow</button>
+                <button class="button is-danger is-static">Unfollow</button>
+            {% endif %}
+        </div>
+    </form>
+    <div class="content">
+        {% for meet in profile.user.meets.all %}
+        <div class="box">
+            {{ meet.body }}
+            <span class="is-small has-text-grey-light">
+                ({{ meet.pub_date }})
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="column">
+
+
+    <div class="block">
+        <h3 class="title is-4">{{ profile.user.username }} follows:</h3>
+        <ul>
+            {% for following in profile.follows.all %}
+                <li>
+                    <a href="{% url 'meetter:profile_detail' following.id %}">{{ following }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="block">
+        <h3 class="title is-4">{{ profile.user.username }} followed by:</h3>
+    <ul style="">
+        {% for follower in profile.followed_by.all %}
+            <li>
+                <a href="{% url 'meetter:profile_detail' follower.id %}">{{ follower.user.username }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    </div>
+
+</div>
+{% endblock content %}
+</body>
+</html>

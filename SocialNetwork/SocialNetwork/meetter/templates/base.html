@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Meetter</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <sec class="hero is-small is-success mb-4">
+        <div class="hero-body">
+            <div class="columns is-vcentered">
+                <div class="column">
+                    <h1 class="title is-1">Meetter</h1>
+                    <p class="subtitle is-4">
+                        Social network for meetings online </p>
+                </div>
+                <div class="column">
+                    <div class="level-right">
+                        <div class="level-item">
+                            {% url 'meetter:main' as the_url %}
+                            {% if request.get_full_path == the_url %}
+                                <button class="button is-primary is-active">
+                                    Dashboard
+                                </button>
+                            {% else %}
+                            <a href="{% url 'meetter:main' %}">
+                                <button class="button is-outlined is-success is-light">
+                                    Dashboard
+                                </button>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="level-item">
+                            {% url 'meetter:profile_list' as the_url %}
+                            {% if request.get_full_path == the_url %}
+                                <button class="button is-primary is-active">
+                                    All profiles
+                                </button>
+                            {% else %}
+                            <a href="{% url 'meetter:profile_list' %}">
+                                <button class="button is-outlined is-success is-light">
+                                    All profiles
+                                </button>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="level-item">
+                            {% url 'meetter:profile_detail' request.user.profile.id as the_url %}
+                            {% if request.get_full_path == the_url %}
+                                <button class="button is-primary is-active">
+                                    My profile
+                                </button>
+                            {% else %}
+                            <a href="{% url 'meetter:profile_detail' request.user.profile.id %}">
+                                <button class="button is-outlined is-success is-light">
+                                    My profile
+                                </button>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="level-item">
+                            <a href="{% url 'meetter:logout' %}">
+                                <button class="button is-outlined is-danger is-light">
+                                    Log out
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </sec>
+    <div class="container">
+        <div class="columns">
+        {% block content %}
+
+        {% endblock content %}
+        </div>
+    </div>
+</body>
+</html>
